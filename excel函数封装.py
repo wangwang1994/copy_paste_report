@@ -1,37 +1,19 @@
-import os
+
 from docx import Document
 from docx.shared import Pt
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from copy import deepcopy
 import os
-# filename=input('请输入文件路径：')
-# os.chdir(filename)
-# filelist=os.listdir()
-# for file in filelist:
-#     if file.endswith('.docx')==True:
-#         docx_file=file
-#         print(docx_file)
-#     if file.endswith('.xlsx')==True:
-#         xlsx_file=file
-#         print(xlsx_file)
+
 filename=input('请输入word报告名，以docx结尾：')
 origin_excel=input('请输入原始excel的名称：')
 baogaobianhao=input('请输入报告编号：')
 yangpinbianhao=input('请输入样品编号：')
 gongsimingcheng=input('请输入抽检公司名称：')
 doc=Document(filename)
+
+
 doc_canshu=Document('参数确认表_模版.docx')
-print(os.getcwd())
-# for table in doc.tables:
-#     print(table)
-# print(doc.tables[2].cell(0,2).text)
-# def copy_table_after(table, paragraph):
-#     tbl, p = table._tbl, paragraph._p
-#     new_tbl = deepcopy(tbl)
-#     p.addnext(new_tbl)
-
-
-
 doc.tables[2].cell(0,2).text='报告编号：'+baogaobianhao
 paragraph=doc.tables[2].cell(0,2).paragraphs[0]
 run=paragraph.runs
@@ -201,7 +183,7 @@ doc_canshu.save('参数确认表.docx')
 
 
 
-import os,sys
+import os
 import openpyxl
 from openpyxl.drawing.image import Image
 from zipfile import ZipFile
@@ -219,7 +201,7 @@ sheet_yuanshijilu=wb_origin['原始记录']
 sheet_yuanshijilu.unmerge_cells('C5:D5')
 
 # File to be pasted into
-template = openpyxl.load_workbook("轻型汽油车原始记录模板.xlsx")  # Add file name
+template = openpyxl.load_workbook("轻型汽油车原始记录模板.xlsx")  # Add file name这里是黏贴的模版
 temp_sheet_canshu = template["参数"]  # Add Sheet name
 temp_sheet_yuanshijilu=template['原始记录']
 

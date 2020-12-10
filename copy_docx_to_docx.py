@@ -4,6 +4,7 @@ from docx.enum.text import WD_ALIGN_PARAGRAPH
 from copy import deepcopy
 # filename=
 doc=Document('报告.docx')
+doc_canshu=Document('参数确认表_模版.docx')
 # for table in doc.tables:
 #     print(table)
 # print(doc.tables[2].cell(0,2).text)
@@ -116,7 +117,54 @@ for item in text:
         jianyandidian=item
 print(jianyanshijian)
 print(jianyandidian)
+def replace_text(doc, old_text, new_text):
+    # 遍历每个段落
+    for p in doc.paragraphs:
+        # 如果要搜索的内容在该段落
+        if old_text in p.text:
+            # 使用 runs 替换内容但不改变样式
+            # 注意！runs 会根据样式分隔内容，确保被替换内容的样式一致
+            for run in p.runs:
+                if old_text in run.text:
+                    run.text = run.text.replace(old_text, new_text)
+replace_text(doc,'检验人员：','检验人员：李成果')
+replace_text(doc,'主检：','主检：李成果')
+replace_text(doc,'报告编写人：','报告编写人： 李成果 ')
+replace_text(doc,'报告校对人：','报告校对人： 龚香坤 ')
+
+
 doc.save('修改编号后.docx')
+
+
+canshuqueren_table=doc.tables[7]
+
+
+def move_table_after(table, paragraph):
+    tbl, p = table._tbl, paragraph._p
+    p.addnext(tbl)
+def get_paragraph(paras, text):
+    for para in paras:
+        if text in para.text:
+            return para
+    raise KeyError("The text cannot be found anywhere in the document")
+para1=get_paragraph(doc_canshu.paragraphs,'参数确认表')
+move_table_after(canshuqueren_table,para1)
+
+
+canshuqueren_row1 = doc_canshu.tables[0].rows[0]
+canshuqueren_row2 = doc_canshu.tables[0].rows[10]
+canshuqueren_row3 = doc_canshu.tables[0].rows[11]
+canshuqueren_row4 = doc_canshu.tables[0].rows[12]
+canshuqueren_row5 = doc_canshu.tables[0].rows[13]
+
+remove_row(canshuqueren_table, canshuqueren_row1)
+remove_row(canshuqueren_table, canshuqueren_row2)
+remove_row(canshuqueren_table, canshuqueren_row3)
+remove_row(canshuqueren_table, canshuqueren_row4)
+remove_row(canshuqueren_table, canshuqueren_row5)
+
+doc_canshu.save('参数确认表111.docx')
+
 
 
 
